@@ -18,6 +18,7 @@
             <tr>
                 <th>Student</th>
                 <th>Subject</th>
+                <th>Course</th>
                 <th>Grade</th>
                 <th>Actions</th>
             </tr>
@@ -27,6 +28,7 @@
                 <tr>
                     <td>{{ $grade['student']['first_name'] }} {{ $grade['student']['last_name_1'] }} {{ $grade['student']['last_name_2'] }}</td>
                     <td>{{ $grade['subject']['name'] }}</td>
+                    <td>{{ $grade['subject']['course_level'] }}</td>
                     <td>{{ $grade['grade'] }}</td>
                     <td>
                         <a href="{{ route('grades.edit', $grade['id']) }}" class="btn btn-warning btn-sm">Edit</a>
