@@ -6,9 +6,11 @@ use App\Http\Controllers\SubjectController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', function () {
+/* Route::get('/', function () {
     return view('welcome');
-});
+}); */
+// WELCOME ROUTE
+Route::get('/', [StudentController::class, 'index'])->name('students.index');
 
 // FRONTEND STUDENTS ROUTES
 Route::get('/students', [StudentController::class, 'index'])->name('students.index');
