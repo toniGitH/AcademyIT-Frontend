@@ -19,20 +19,28 @@ class SubjectController extends Controller
         $response = Http::get($this->apiUrl);
         $subjects = $response->json();
 
-        return view('subjects.index', compact('subjects'));
+        $subjectsWithAverage = [];
+
+        foreach ($subjects as $subject) {
+            $averageResponse = Http::get(env('API_URL') . '/averageBySubject/' . $subject['id']);
+            $averageData = $averageResponse->json();
+
+            if (isset($averageData['average_grade'])) {
+                $subject['average_grade'] = $averageData['average_grade'];
+            } else {
+                $subject['average_grade'] = "Not Available";
+            }
+
+            $subjectsWithAverage[] = $subject;
+        }
+
+        return view('subjects.index', compact('subjectsWithAverage'));
     }
 
     public function create()
     {
         return view('subjects.create');
     }
-
-/*     public function store(Request $request)
-    {
-        Http::post($this->apiUrl, $request->all());
-
-        return redirect()->route('subjects.index')->with('success', 'Subject successfully created');
-    } */
 
     public function store(Request $request)
     {
