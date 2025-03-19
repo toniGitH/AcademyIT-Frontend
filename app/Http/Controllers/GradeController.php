@@ -19,7 +19,15 @@ class GradeController extends Controller
         $response = Http::get($this->apiUrl);
         $grades = $response->json();
 
-        return view('grades.index', compact('grades'));
+        $overallResponse = Http::get(env('API_URL') . '/overallAverageGrade');
+        
+        if ($overallResponse->successful()) {
+            $overallAverageGrade = $overallResponse->json()['overall_average_grade'];
+        } else {
+            $overallAverageGrade = $overallResponse->json()['message'];
+        }
+
+        return view('grades.index', compact('grades', 'overallAverageGrade'));
     }
 
     public function create()

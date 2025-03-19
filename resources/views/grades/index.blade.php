@@ -5,6 +5,9 @@
 @section('content')
 <div class="container">
     <h1 class="mb-4">Grades</h1>
+    <div class="alert alert-info p-3 mb-4">
+        AVERAGE GRADE OF ALL STUDENTS<strong class="ms-3">{{$overallAverageGrade}}</strong>
+    </div>
     <a href="{{ route('grades.create') }}" class="btn btn-primary mb-3">Add New Grade</a>
 
     @if(session('success'))
