@@ -62,16 +62,15 @@ class StudentController extends Controller
 
     public function expedient($studentId)
     {
-        $gradesResponse = Http::get(env('API_URL') . '/grades/student/' . $studentId);
-    
-        if ($gradesResponse->successful()) {
-            $grades = $gradesResponse->json();
-    
-            foreach ($grades as &$grade) {
-                $subjectId = $grade['subject_id'];
-    
-                $subjectResponse = Http::get(env('API_URL') . '/subjects/' . $subjectId);
-    
+        $gradesResponse = Http::get(env('API_URL') . "/grades/student/{$studentId}");
+        $grades = $gradesResponse->successful() ? $gradesResponse->json() : [];
+
+        foreach ($grades as &$grade) {
+            $subjectId = $grade['subject_id'] ?? null;
+
+            if ($subjectId) {
+                $subjectResponse = Http::get(env('API_URL') . "/subjects/{$subjectId}");
+
                 if ($subjectResponse->successful()) {
                     $subject = $subjectResponse->json();
                     $grade['subject_name'] = $subject['name'] ?? 'Unknown Subject';
@@ -81,19 +80,24 @@ class StudentController extends Controller
                     $grade['course_level'] = 'Unknown Level';
                 }
             }
-        } else {
-            $grades = [];
         }
-    
-        $studentResponse = Http::get(env('API_URL') . '/students/' . $studentId);
-    
-        if ($studentResponse->successful()) {
-            $student = $studentResponse->json();
+
+        $studentResponse = Http::get(env('API_URL') . "/students/{$studentId}");
+        $student = $studentResponse->successful() ? $studentResponse->json() : null;
+
+        $studentAverageResponse = Http::get(env('API_URL') . "/grades/student/{$studentId}/average");
+        $studentAverage = $studentAverageResponse->json();
+
+        if ($studentAverageResponse->status() == 404 && isset($studentAverage['message'])) {
+            $studentAverage = $studentAverage['message'];
+        } elseif (isset($studentAverage['average_grade'])) {
+            $studentAverage = $studentAverage['average_grade'];
         } else {
-            $student = null;
+            $studentAverage = 'N/A'; // Fallback in case of unexpected data
         }
-    
-        return view('students.expedient', compact('grades', 'student'));
+
+        return view('students.expedient', compact('grades', 'student', 'studentAverage'));
     }
+
     
 }

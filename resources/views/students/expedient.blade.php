@@ -6,6 +6,10 @@
 <div class="container">
     <h1 class="mb-4">Expedient for Student {{ $student['first_name'] }} {{ $student['last_name_1'] }} {{ $student['last_name_2'] ?? '' }}</h1>
 
+    <div class="alert alert-info p-3 mb-4 d-inline-block">
+        AVERAGE GRADE:<strong class="ms-3">{{ $studentAverage }}</strong>
+    </div>
+
     @if(count($grades) > 0)
         <table class="table">
             <thead>
