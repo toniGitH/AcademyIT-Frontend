@@ -29,7 +29,7 @@
 
         <div class="form-group mb-3">
             <label for="grade">Grade</label>
-            <input type="number" id="grade" name="grade" class="form-control" step="0.01" min="0" max="10" required>
+            <input type="number" id="grade" name="grade" class="form-control" step="0.01" min="0" max="10">
         </div>
         
         <button type="submit" class="btn btn-primary">Save Grade</button>
