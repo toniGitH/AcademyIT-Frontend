@@ -19,22 +19,7 @@ class SubjectController extends Controller
         $response = Http::get($this->apiUrl);
         $subjects = $response->json();
 
-        $subjectsWithAverage = [];
-
-        foreach ($subjects as $subject) {
-            $averageResponse = Http::get(env('API_URL') . '/averageBySubject/' . $subject['id']);
-            $averageData = $averageResponse->json();
-
-            if (isset($averageData['average_grade'])) {
-                $subject['average_grade'] = $averageData['average_grade'];
-            } else {
-                $subject['average_grade'] = "Not Available";
-            }
-
-            $subjectsWithAverage[] = $subject;
-        }
-
-        return view('subjects.index', compact('subjectsWithAverage'));
+        return view('subjects.index', compact('subjects'));
     }
 
     public function create()
@@ -44,15 +29,12 @@ class SubjectController extends Controller
 
     public function store(Request $request)
     {
-        // Hacemos la petición POST a la API para crear el subject
         $response = Http::post($this->apiUrl, $request->all());
 
-        // Verificamos si la respuesta de la API fue exitosa
         if ($response->successful()) {
             return redirect()->route('subjects.index')->with('success', 'Subject successfully created');
         }
 
-        // Si la respuesta de la API no fue exitosa, redirigimos con el mensaje de error
         return redirect()->route('subjects.index')->with('error', 'Failed to create subject. ' . $response->json()['error']);
     }
 
@@ -76,5 +58,13 @@ class SubjectController extends Controller
         Http::delete("{$this->apiUrl}/{$id}");
 
         return redirect()->route('subjects.index')->with('success', 'Subject successfully deleted');
+    }
+
+    public function average($id){
+        
+        $response = Http::get(env('API_URL') . "/averageBySubject/{$id}");
+        $subjectAverage = $response->json();
+
+        return view('subjects.average', compact('subjectAverage'));  
     }
 }

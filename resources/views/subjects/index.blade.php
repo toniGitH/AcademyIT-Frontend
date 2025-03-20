@@ -25,16 +25,14 @@
                 <tr>
                     <th>Subject Name</th>
                     <th>Course Level</th>
-                    <th>Overall Average Grade</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($subjectsWithAverage as $subject)
+                @foreach($subjects as $subject)
                     <tr>
                         <td>{{ $subject['name'] }}</td>
                         <td>{{ $subject['course_level'] }}</td>
-                        <td>{{ $subject['average_grade'] }}</td>
                         <td>
                             <a href="{{ route('subjects.edit', $subject['id']) }}" class="btn btn-warning btn-sm">Edit</a>
                             <form action="{{ route('subjects.destroy', $subject['id']) }}" method="POST" style="display:inline;">
@@ -42,6 +40,7 @@
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
                             </form>
+                            <a href="{{ route('subjects.average', $subject['id']) }}" class="btn btn-warning btn-sm">Average</a>
                         </td>
                     </tr>
                 @endforeach

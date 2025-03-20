@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 /* Route::get('/', function () {
     return view('welcome');
 }); */
+
 // WELCOME ROUTE
 Route::get('/', [StudentController::class, 'index'])->name('students.index');
 
@@ -30,6 +31,7 @@ Route::get('subjects/{subject}', [SubjectController::class, 'show'])->name('subj
 Route::get('subjects/{subject}/edit', [SubjectController::class, 'edit'])->name('subjects.edit');
 Route::put('subjects/{subject}', [SubjectController::class, 'update'])->name('subjects.update');
 Route::delete('subjects/{subject}', [SubjectController::class, 'destroy'])->name('subjects.destroy');
+Route::get('subjects/{subject}/average', [SubjectController::class, 'average'])->name('subjects.average');
 
 // FRONTEND GRADES ROUTES
 Route::get('grades', [GradeController::class, 'index'])->name('grades.index');
