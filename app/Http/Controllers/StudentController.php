@@ -54,7 +54,7 @@ class StudentController extends Controller
         $response = Http::delete("{$this->apiUrl}/{$id}");
 
         if ($response->successful()) {
-            return redirect()->route('students.index')->with('success', 'Grade successfully deleted');
+            return redirect()->route('students.index')->with('success', 'Student successfully deleted');
         }
 
         return redirect()->route('students.index')->with('success', 'Student successfully deleted.');
